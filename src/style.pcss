@@ -42,7 +42,16 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  background-color: #EDF8FF
+  background-color: #EDF8FF;
+
+  /* TODO: agrupar los estilos */
+  p {
+    background: red;
+  }
+
+  p:hover {
+    background: blue;
+  }
 }
 
 .banner-izq {
@@ -115,19 +124,19 @@ body {
 
 }
 
+/* TODO: ejemplo */
 .nav-derecha {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: 9px;
 
-}
-
-.nav-derecha a,
-.nav-derecha p {
-  color: red;
-  text-decoration: none;
-  font-weight: bold;
+  a,
+  p {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+  }
 }
 
 .links-nav {
