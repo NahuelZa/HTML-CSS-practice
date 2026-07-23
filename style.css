@@ -1,0 +1,246 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+
+}
+body{
+    background-color: var(--color-fondo);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+:root {
+    --color-primario: #132620;
+    --color-fondo: #f0f0f0;
+    --color-texto: #333;
+    --color-blanco: #fff;
+    --color-borde: #ddd;
+    --color-focus: #acbe06;
+    --bg-color: #f4f6f9;
+    --sidebar-bg: #ffffff;
+    --text-main: #333333;
+    --text-muted: #777777;
+    --border-color: #eaeaea;
+    --orange-food: #ff6b4a;
+}
+.header-color{background: linear-gradient(135deg, #0a2540 0%, #1a5c7c 100%);
+display: inline-block;
+margin: 0 auto;
+overflow: hidden;
+width: 100%;
+
+}
+
+.banner{
+display:flex;
+flex-direction:row;
+justify-content: space-between;
+background-color:#EDF8FF
+}
+.banner-izq{
+display:block;
+margin:10px;
+margin-left:50px
+}
+.evento-titulo {
+    color: #0B3B60;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.evento-descripcion {
+    color: #1E293B;
+    font-size: 14px;
+    line-height: 1.5;
+}
+.banner-der{
+display:flex;
+flex-direction:row;
+align-items:center;
+margin:0 10px;
+gap: 1rem;
+margin-right:50px
+}
+
+.boton-baner{
+padding: 12px 24px;
+border-radius:15px;
+background-color:transparent;
+text-decoration:bold;
+border: 1.5px solid #288C92;
+transition: all 0.2s ease-in-out
+}
+.boton-baner:hover{
+color:#DED9FF;
+cursor:pointer
+}
+.cerrar-banner{
+background-color:transparent;
+border:none;
+align-items: center;
+justify-content: center;
+font-size: 15px;
+}
+
+.cerrar-banner:hover{
+cursor:pointer
+}
+.header-contenedor{
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+}
+.nav-izquierda{
+    display: flex;
+    justify-content: flex-start;
+    gap: 2rem;
+
+}
+.nav-derecha{
+display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap : 9px;
+    
+}
+
+.nav-derecha a,p {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    
+    
+}
+.links-nav{
+    display: flex;
+    gap: 2em;
+    align-items:center
+
+}
+.links-nav li {
+    list-style-type: none;
+}
+
+.links-nav li a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+.dropdown{
+    display: flex;
+    flex-direction: column;
+}
+.dropdown{
+    display: flex;
+}
+.subDropdown {
+    display: none;
+    position: absolute;
+    top: 130%;
+    left: 0;
+    background-color: var(--color-blanco);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15); /* Sombra elegante IA */
+    padding: 20px;
+    border-radius: 8px;
+    z-index: 999;
+    display: flex;
+    gap: 2.5rem;
+    min-width: 600px;
+}
+.hasDropdown:hover .subDropdown {
+    display: flex;
+}
+.hasDropdown:not(:hover) .subDropdown {  /*IA*/
+    display: none;
+}
+.hasDropdown {
+    position: relative;
+}
+
+.portada{
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    padding: 40px 20px;
+
+}
+
+.portada-izquierda{
+    padding-right: 20px;
+    flex: 1;
+    color:white;
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+    align-items: flex-start;
+}
+.portada-derecha{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    
+}
+.portada-derecha img{
+    max-width: 70%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.boton-primario{
+    background-color: var(--orange-food);
+    color: var(--color-blanco);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out
+}
+
+.boton-primario:hover{
+border-radius:50px
+}
+.menu-card {
+    display: flex;
+    align-items: center;
+    background-color: #f8fafc;
+    border-radius: 12px;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: #808080;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background-color 0.2s ease, transform 0.2s ease; /*IA*/
+    white-space: nowrap;
+}
+.menu-card span{
+color:#808080;
+}
+.menu-card:hover {
+    background-color: #f1f5f9;
+    transform: translateY(-1px);/*IA*/
+}
+
+.foto-menu {
+    width: 32px;
+    height: 32px;
+    margin-right: 12px;
+    object-fit: contain;
+}
+.menu-cards {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
