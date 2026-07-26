@@ -1,3 +1,2 @@
 import './style.pcss';
-
-alert('Hello, World!');
+import 'bootstrap/dist/js/bootstrap.js';
