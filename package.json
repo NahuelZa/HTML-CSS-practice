@@ -13,5 +13,8 @@
     "postcss": "^8.5.22",
     "postcss-nested": "^7.0.2",
     "vite": "^8.1.1"
+  },
+  "dependencies": {
+    "bootstrap": "5.3.8"
   }
 }
