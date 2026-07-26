@@ -1,1 +1,43 @@
 @import 'bootstrap/dist/css/bootstrap.css';
+@import '@fortawesome/fontawesome-free/css/all.css';
+
+.navbar {
+    .logo {
+        height: 2rem;
+    }
+
+    .logo,
+    .input-logo {
+        color: var(--bs-primary);
+        fill: var(--bs-primary);
+    }
+
+    .searchbar {
+        width: 30rem;
+    }
+
+    form {
+        input[type="text"] {
+            border: 0;
+            background-color: rgba(var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity)) !important;
+
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+
+    .dropstart {
+        .dropdown-toggle {
+            background-color: rgba(var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity)) !important;
+
+            &:before {
+                content: none;
+            }
+
+            i {
+                color: var(--bs-secondary);
+            }
+        }
+    }
+}
