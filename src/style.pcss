@@ -14,6 +14,10 @@
 
     .searchbar {
         width: 30rem;
+
+        &:focus-within {
+            border-color: black !important  ;
+        }
     }
 
     form {
@@ -38,6 +42,69 @@
             i {
                 color: var(--bs-secondary);
             }
+        }
+    }
+ 
+}
+
+
+.header{
+    .dropdown{
+        .btn-light {
+    --bs-btn-bg: transparent;
+    --bs-btn-border-color: transparent;
+        }
+    }
+
+.icon-link{    
+    color: var(--bs-secondary);
+    text-decoration: none;
+    &:hover{
+        color: rgba(3, 11, 22, 0.29);
+    }
+
+}
+
+    .icon-link > .bi {    
+    width: 2em;
+    height: 2em;    
+    border-radius: 5em;
+    
+}
+
+
+       
+ }
+
+ .head-der{
+    .dropdown {
+            .dropdown-toggle {
+                background-color: transparent  !important;
+
+                &:before {
+                    content: none;
+                }
+
+                i {
+                    color: var(--bs-secondary);
+                }
+            }
+        }
+ }
+
+.articulos {
+  transition: background-color 0.2s ease; 
+
+  &:hover {
+    background-color: var(--bs-secondary-bg) !important;
+    cursor: pointer;
+  }
+}
+
+.footer{
+    .fa-solid{
+        &:hover{
+            color: var(--bs-primary);
         }
     }
 }
