@@ -8,7 +8,7 @@ const port = process.env.PORT || 5173;
 async function createServer() {
   const app = express();
 
-  app.engine('hbs', engine({ extname: '.hbs', defaultLayout: false }));
+  app.engine('hbs', engine({ extname: '.hbs', defaultLayout: 'main' }));
   app.set('view engine', 'hbs');
   app.set('views', './views');
 
