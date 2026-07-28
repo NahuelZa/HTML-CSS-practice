@@ -1,6 +1,7 @@
 import express from 'express';
 import { engine } from 'express-handlebars';
 import { createServer as createViteServer } from 'vite';
+import data from './data/data.json' with {type: 'json'}
 
 const port = process.env.PORT || 5173;
 
@@ -21,7 +22,7 @@ async function createServer() {
   app.get('/', async (req, res, next) => {
     try {
       const rendered = await new Promise((resolve, reject) => {
-        app.render('index', (err, html) => (err ? reject(err) : resolve(html)));
+        app.render('index', { data }, (err, html) => (err ? reject(err) : resolve(html)));
       });
       const html = await vite.transformIndexHtml(req.originalUrl, rendered);
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html);

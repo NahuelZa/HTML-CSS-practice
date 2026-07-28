@@ -1,0 +1,57 @@
+{
+  "communities": [
+    {
+      "name": "javascript",
+      "subscribers": 15000000,
+      "image": "https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png"
+    },
+    {
+      "name": "vuejs",
+      "subscribers": 7000000,
+      "image": "https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png"
+    },
+    {
+      "name": "PHP",
+      "subscribers": 13000000,
+      "image": "https://a.thumbs.redditmedia.com/zDOFJTXd6fmlD58VDGypiV94Leflz11woxmgbGY6p_4.png"
+    }
+  ],
+  "posts": [
+    {
+      "community": "javascript",
+      "title": "Nyno: For frontend developers interested in EU-AI (securely integrate EU-AI with JS in <20min)",
+      "description": "",
+      "image": "",
+      "likes": 1000,
+      "comments": 200,
+      "shares": 100
+    },
+    {
+      "community": "javascript",
+      "title": "Nubjs - A fast all-in-one toolkit that augments Node.js instead of replacing it ",
+      "description": "",
+      "image": "",
+      "likes": 500,
+      "comments": 150,
+      "shares": 2
+    },
+    {
+      "community": "vuejs",
+      "title": "Vael-ui - Vapor Ready Vue Components ",
+      "description": "In the past few weeks I've seen a LOT of UI libraries on this sub, so I thought I'd throw my hat in the ring too.",
+      "image": "https://preview.redd.it/vael-ui-vapor-ready-vue-components-v0-jqi4awos7ufh1.jpg?width=640&crop=smart&auto=webp&s=792afe8712fdae0520f92f07cf70f7124e9cf7ce",
+      "likes": 123,
+      "comments": 10,
+      "shares": 0
+    },
+    {
+      "community": "php",
+      "title": "PHP on Mobile faster than React Native? We built PAM Native — embedding PHP into Rust via Zero-Copy FFI ",
+      "description": "We’re rewriting the rules of mobile runtimes with PAM Native. Instead of heavy JavaScript engines or WebViews, we’re embedding PHP directly into a high-performance Rust core using Zero-Copy C-FFI. ",
+      "image": "",
+      "likes": 32,
+      "comments": 1,
+      "shares": 1
+    }
+  ]
+}
