@@ -1,0 +1,10 @@
+<div
+        class="contenedor-aside p-2 bg-black text-white rounded mt-3 d-flex flex-column allign-items-center justify-content-start">
+    <p>Communities</p>
+    <div class="comunidades ">
+        {{#each data.communities }}
+            {{> community-partial }}
+        {{/each}}
+        <button type="button" class="btn btn-dark rounded-pill btn-sm">Ver mas</button>
+    </div>
+</div>

@@ -8,6 +8,7 @@
 </head>
 
 <body>
+    {{> test-partial}}
     <h1>{{ data.communities.length }}</h1>
     <nav class="navbar bg-body-tertiary px-4 py-2">
         <div class="d-flex justify-content-between align-items-center w-100">
@@ -1281,54 +1282,7 @@
                 </article>
             </section>
             <aside class="col-3">
-                <div
-                    class="contenedor-aside p-2 bg-black text-white rounded mt-3 d-flex flex-column allign-items-center justify-content-start">
-                    <p>Communities</p>
-                    <div class="comunidades ">
-
-                        <div
-                            class="imagen-y-texto d-flex d-flex justify-content-start align-items-center m-1 pe-5 p-2 rounded-1">
-                            <a class="icon-link h-50" href="#">
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnkIkAbvnMivK2bqxLN9zFBYer0SnOQnP7pFRW2hhqOQ&s=10"
-                                    class="bi" viewBox="0 0 16 16" aria-hidden="true">
-                                </img>
-                            </a>
-                            <div class="texto ms-2">
-                                <h6>Chinese/canlde</h6>
-                                <p class="small">5.300.300 mill Subs</p>
-                            </div>
-                        </div>
-
-                          <div
-                            class="imagen-y-texto d-flex d-flex justify-content-start align-items-center m-1 pe-5 p-2 rounded-1">
-                            <a class="icon-link h-50" href="#">
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnkIkAbvnMivK2bqxLN9zFBYer0SnOQnP7pFRW2hhqOQ&s=10"
-                                    class="bi" viewBox="0 0 16 16" aria-hidden="true">
-                                </img>
-                            </a>
-                            <div class="texto ms-2">
-                                <h6>Chinese/canlde</h6>
-                                <p class="small">5.300.300 mill Subs</p>
-                            </div>
-                        </div>
-
-                          <div
-                            class="imagen-y-texto d-flex d-flex justify-content-start align-items-center m-1 pe-5 p-2 rounded-1">
-                            <a class="icon-link h-50" href="#">
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnkIkAbvnMivK2bqxLN9zFBYer0SnOQnP7pFRW2hhqOQ&s=10"
-                                    class="bi" viewBox="0 0 16 16" aria-hidden="true">
-                                </img>
-                            </a>
-                            <div class="texto ms-2">
-                                <h6>Chinese/canlde</h6>
-                                <p class="small">5.300.300 mill Subs</p>
-                            </div>
-                        </div>
-
-
-                        <button type="button" class="btn btn-dark rounded-pill btn-sm">Ver mas</button>
-
-                    </div>
+                {{> communities-partial }}
             </aside>
         </div>
     </div>
