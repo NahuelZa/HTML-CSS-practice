@@ -3,7 +3,7 @@ import 'bootstrap/dist/js/bootstrap.js';
 import { addAdressToLocalStorage, getDireccion, removeDireccion, removeDireccionSingle } from "./utils/saveAdress.js";
 import { SetDeDirecciones } from './utils/setDirecciones.js';
 
-let map = L.map('map').setView([51.505, -0.09], 13);
+const map = L.map('map', { scrollWheelZoom:true }).setView([40.4168, -3.7038], 5);
 let marcadorActual = null;
 let datosDireccion = {};
 let setDeDirecciones = new SetDeDirecciones();
@@ -28,6 +28,11 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 let popup = L.popup();
 
+function fmtCoord(valor, letraMayorA0Grados, letraMenorA0Grados){
+    const puntoCardinal = valor >= 0 ? letraMayorA0Grados : letraMenorA0Grados;
+    return Math.abs(valor).toFixed(3) + '°' + puntoCardinal;
+  }
+
 async function onMapClick(e) {
     const lat = e.latlng.lat;
     const lon = e.latlng.lng;
@@ -44,13 +49,13 @@ async function onMapClick(e) {
 
         popup
             .setLatLng(e.latlng)
-            .setContent("You clicked the map at " + e.latlng.toString() + "<br>" + lugar.display_name + "<br>🌡️ Temp: " + datosClima.temperatura + " " + datosClima.unidadTemp + "<br>💨 Viento: " + datosClima.viento + " " + datosClima.unidadViento)
+            .setContent("You clicked the map at " + fmtCoord(e.latlng.lat, 'N', 'S') + ", " + fmtCoord(e.latlng.lng, 'E', 'O') + "<br>" + lugar.display_name + "<br>🌡️ Temp: " + datosClima.temperatura + " " + datosClima.unidadTemp + "<br>💨 Viento: " + datosClima.viento + " " + datosClima.unidadViento)
             .openOn(map);
 
         datosDireccion = {
-            latitud: lat,
-            longitud: lon,
-            nombreLugar: lugar.display_name
+            latitud: fmtCoord(lat, 'N', 'S'),
+            longitud: fmtCoord(lon, 'E', 'O'),
+            nombreLugar: lugar.display_name.split(',').slice(0,2).join(', ')
         };
     } catch (error) {
         console.error('Error consulting Nominatim:', error);
@@ -75,9 +80,10 @@ async function buscarDireccion() {
             const lon = parseFloat(lugar.lon);
 
             datosDireccion = {
-                latitud: lat,
-                longitud: lon,
-                nombreLugar: lugar.display_name
+                latitud: fmtCoord(lat, 'N', 'S'),
+                longitud: fmtCoord(lon, 'E', 'O'),
+                nombreLugar: lugar.display_name.split(',').slice(0,2).join(', ')
+                
             };
             return datosDireccion;
         } else {
@@ -92,6 +98,7 @@ async function setearMarcador(lat, lon, nombreLugar, datosClima) {
     if (marcadorActual) {
         map.removeLayer(marcadorActual);
     }
+    //Si solo le paso lat y lon, no le pongo popup. Si le paso nombreLugar y datosClima, le pongo el popup con info del clima
     if (!nombreLugar) {
         marcadorActual = L.marker([lat, lon]).addTo(map);
         return;
@@ -146,7 +153,7 @@ formulario.addEventListener('submit', async (event) => {
     await setearMarcador(datosDireccion.latitud, datosDireccion.longitud, datosDireccion.nombreLugar, datosClima);
     await mostrarInfoClima(datosClima);
 });
-
+//GUARDAR DIRECCION EN LOCALSTORAGE
 botonGuardarDireccion.addEventListener('click', () => {
     if (!datosDireccion || !datosDireccion.latitud) {
         alert('No hay dirección para guardar. Por favor, selecciona una ubicación primero.');
@@ -205,7 +212,7 @@ table.addEventListener('click', async (event) => {
         const clima = await obtenerClima(lat, lon);
         setearMarcador(lat, lon, nombreLugar, clima);
         mostrarInfoClima(clima);
-        map.setView([lat, lon], 13);
+        map.flyTo([lat, lon], 13, { duration: 0.8 });
     }
 });
 
