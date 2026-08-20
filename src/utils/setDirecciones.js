@@ -5,6 +5,7 @@ export class SetDeDirecciones {
 
     // Agrega la dirección usando latitud y longitud como clave única
     add(direccion) {
+        
         // Creamos una clave única uniendo latitud y longitud
         const hashKey = `${direccion.latitud}_${direccion.longitud}`;
         

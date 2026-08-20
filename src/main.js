@@ -28,7 +28,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 let popup = L.popup();
 
-function fmtCoord(valor, letraMayorA0Grados, letraMenorA0Grados){
+function agregarCoordenada(valor, letraMayorA0Grados, letraMenorA0Grados){
     const puntoCardinal = valor >= 0 ? letraMayorA0Grados : letraMenorA0Grados;
     return Math.abs(valor).toFixed(3) + '°' + puntoCardinal;
   }
@@ -49,12 +49,12 @@ async function onMapClick(e) {
 
         popup
             .setLatLng(e.latlng)
-            .setContent("You clicked the map at " + fmtCoord(e.latlng.lat, 'N', 'S') + ", " + fmtCoord(e.latlng.lng, 'E', 'O') + "<br>" + lugar.display_name + "<br>🌡️ Temp: " + datosClima.temperatura + " " + datosClima.unidadTemp + "<br>💨 Viento: " + datosClima.viento + " " + datosClima.unidadViento)
+            .setContent("You clicked the map at " + agregarCoordenada(e.latlng.lat, 'N', 'S') + ", " + agregarCoordenada(e.latlng.lng, 'E', 'O') + "<br>" + lugar.display_name + "<br>🌡️ Temp: " + datosClima.temperatura + " " + datosClima.unidadTemp + "<br>💨 Viento: " + datosClima.viento + " " + datosClima.unidadViento)
             .openOn(map);
 
         datosDireccion = {
-            latitud: fmtCoord(lat, 'N', 'S'),
-            longitud: fmtCoord(lon, 'E', 'O'),
+            latitud: lat,
+            longitud: lon,
             nombreLugar: lugar.display_name.split(',').slice(0,2).join(', ')
         };
     } catch (error) {
@@ -80,8 +80,8 @@ async function buscarDireccion() {
             const lon = parseFloat(lugar.lon);
 
             datosDireccion = {
-                latitud: fmtCoord(lat, 'N', 'S'),
-                longitud: fmtCoord(lon, 'E', 'O'),
+                latitud: lat,
+                longitud: lon,
                 nombreLugar: lugar.display_name.split(',').slice(0,2).join(', ')
                 
             };
@@ -187,7 +187,7 @@ const cargarDireccionesGuardadasEnTabla = (datosDireccion = null) => {
 
 const crearFilaHTML = (dir) => `
     <tr>
-        <td>${dir.latitud}, ${dir.longitud}</td>
+        <td>${agregarCoordenada(dir.latitud, 'N', 'S')}, ${agregarCoordenada(dir.longitud, 'E', 'O')}</td>
         <td>
             <a href="#" class="direccion-link" data-lat="${dir.latitud}" data-lon="${dir.longitud}">
                 ${dir.nombreLugar}

@@ -16,4 +16,3 @@ export const removeDireccionSingle = (lat,lon) => {
   );
   addAdressToLocalStorage(nuevasDirecciones);
 };
-console.log(getDireccion());
