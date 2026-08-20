@@ -1,20 +1,24 @@
-<aside class="col-12 col-xxl-3 order-2 order-xxl-1">
-    <div class="card shadow-sm">
-        <div class="card-header bg-secondary text-white fw-semibold">
-            Ubicaciones
-        </div>
-        <div class="table-responsive">
-            <table class="table table-striped table-hover align-middle mb-0 w-100">
-                <thead class="table-dark">
-                    <tr>
-                        <th scope="col">Coordenadas</th>
-                        <th scope="col">Ciudad</th>
-                        <th scope="col">Boton</th>
-                    </tr>
-                </thead>
-                <tbody id="data-table">
-                </tbody>
-            </table>
-        </div>
+<aside class="col-12 col-md-4 col-lg-3 order-2 order-md-1">
+  <div class="log-panel">
+    <div class="log-panel-head">
+      <h2>Índice de lugares</h2>
+      <span class="log-count" id="contador-lugares">0 guardados</span>
     </div>
+    <div class="table-responsive">
+      <table class="gazette">
+        <thead>
+          <tr>
+            <th scope="col">Coordenadas</th>
+            <th scope="col">Ciudad</th>
+            <th scope="col">Boton</th>
+          </tr>
+        </thead>
+        <tbody id="data-table"></tbody>
+      </table>
+    </div>
+    <div id="mensaje-vacio" class="empty-log">
+      <span class="glyph" >🧭</span>
+      Aún no guardaste ningún lugar.<br>Buscá una ciudad y tocá «Guardar».
+    </div>
+  </div>
 </aside>

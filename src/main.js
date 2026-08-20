@@ -11,13 +11,20 @@ const direccionesGuardadas = getDireccion();
 const botonGuardarDireccion = document.getElementById('boton-guardar-direccion');
 const table = document.getElementById('data-table');
 const formulario = document.getElementById('formulario-busqueda');
+const mensajeVacio = document.getElementById('mensaje-vacio');
+const contadorLugares= document.getElementById('contador-lugares');
+
+
 
 //Cargo direcciones del localStorage al SetDeDirecciones para poder trabajar con ellas
 const cargarDireccionesGuardadas = () => {
-    if (direccionesGuardadas === null || direccionesGuardadas === undefined) return;
+    if (direccionesGuardadas === null || direccionesGuardadas === undefined || direccionesGuardadas.length === 0) return;
+
     direccionesGuardadas.forEach((direccion) => {
         setDeDirecciones.add(direccion);
     });
+    mensajeVacio.style.display = "none";
+    contadorLugares.textContent = setDeDirecciones.size === 1 ? "1 guardado" : setDeDirecciones.size + " guardados";
 };
 cargarDireccionesGuardadas();
 //Cargar el mapa
@@ -153,6 +160,7 @@ formulario.addEventListener('submit', async (event) => {
     await setearMarcador(datosDireccion.latitud, datosDireccion.longitud, datosDireccion.nombreLugar, datosClima);
     await mostrarInfoClima(datosClima);
 });
+
 //GUARDAR DIRECCION EN LOCALSTORAGE
 botonGuardarDireccion.addEventListener('click', () => {
     if (!datosDireccion || !datosDireccion.latitud) {
@@ -164,6 +172,8 @@ botonGuardarDireccion.addEventListener('click', () => {
         addAdressToLocalStorage(setDeDirecciones);
         alert('Dirección guardada en el almacenamiento local.');
         cargarDireccionesGuardadasEnTabla(datosDireccion);
+        mensajeVacio.style.display = "none";
+        contadorLugares.textContent = setDeDirecciones.size === 1 ? "1 guardado" : setDeDirecciones.size + " guardados";
     } else {
         alert("Este lugar ya está en tu lista de guardados.");
     }
@@ -215,7 +225,7 @@ table.addEventListener('click', async (event) => {
         map.flyTo([lat, lon], 13, { duration: 0.8 });
     }
 });
-
+//ELIMINAR DIRECCION DEL LOCALSTORAGE
 table.addEventListener('click', async (event) => {
     const link = event.target.closest('.eliminar-direccion');
 
@@ -225,6 +235,10 @@ table.addEventListener('click', async (event) => {
         const lon = link.dataset.lon;
         setDeDirecciones.delete(lat, lon);
         addAdressToLocalStorage(setDeDirecciones);
+        if (setDeDirecciones.size === 0) {
+            mensajeVacio.style.display = "block";
+        }
+        contadorLugares.textContent = setDeDirecciones.size === 1 ? "1 guardado" : setDeDirecciones.size + " guardados";
 
         cargarDireccionesGuardadasEnTabla();
         if (marcadorActual) {

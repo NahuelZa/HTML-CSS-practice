@@ -1,6 +1,18 @@
-<header class="bg-primary bg-gradient text-white d-flex justify-content-center p-3 shadow-sm">
-    <form class="d-flex gap-2" id="formulario-busqueda">
-        <input type="text" placeholder="Buscar..." id="buscador-ciudad" name="buscador-ciudad" class="form-control">
-        <button type="submit" id="boton-buscar-ciudad" class="btn btn-light fw-semibold">Buscar</button>
+<header class="chart-header px-3 px-md-4 py-3">
+  <svg class="compass-mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="50" cy="50" r="46" stroke="#D9B563" stroke-width="1"/>
+    <circle cx="50" cy="50" r="34" stroke="#D9B563" stroke-width="1"/>
+    <path d="M50 6 L56 50 L50 94 L44 50 Z" fill="#D9B563"/>
+    <path d="M6 50 L50 44 L94 50 L50 56 Z" fill="#D9B563" opacity=".6"/>
+  </svg>
+  <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+    <div>
+      <div class="brand-eyebrow">Explorador de coordenadas</div>
+      <h1 class="brand-title">Bitácora de ciudades</h1>
+    </div>
+    <form class="search-shell d-flex gap-2" id="formulario-busqueda" role="search">
+      <input type="text" placeholder="Buscar una ciudad…" id="buscador-ciudad" name="buscador-ciudad" class="form-control" autocomplete="off">
+      <button type="submit" id="boton-buscar-ciudad" class="btn">Buscar</button>
     </form>
+  </div>
 </header>
