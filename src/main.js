@@ -10,7 +10,7 @@ const map = L.map('map', { scrollWheelZoom:true }).setView([40.4168, -3.7038], 5
 let marcadorActual = null;
 let datosDireccion = {};
 let setDeDirecciones = new SetDeDirecciones();
-const direccionesGuardadas = readLocaleStorage(LOCAL_STORAGE_KEYS.COORDINATES);
+const direccionesGuardadas = new Map(readLocaleStorage(LOCAL_STORAGE_KEYS.COORDINATES));
 
 const botonGuardarDireccion = document.getElementById('boton-guardar-direccion');
 const table = document.getElementById('data-table');
@@ -157,7 +157,7 @@ botonGuardarDireccion.addEventListener('click', () => {
     }
 
     if (setDeDirecciones.add(datosDireccion)) {
-        writeLocaleStorage(LOCAL_STORAGE_KEYS.COORDINATES, setDeDirecciones);
+        writeLocaleStorage(LOCAL_STORAGE_KEYS.COORDINATES, Array.from(setDeDirecciones.getItems().entries()));
         alert('Dirección guardada en el almacenamiento local.');
         cargarDireccionesGuardadasEnTabla(datosDireccion);
     } else {
@@ -171,7 +171,7 @@ const cargarDireccionesGuardadasEnTabla = (datosDireccion = null) => {
         return;
     }
 
-    const direccionesGuardadas = readLocaleStorage(LOCAL_STORAGE_KEYS.COORDINATES);
+    const direccionesGuardadas = new Map(readLocaleStorage(LOCAL_STORAGE_KEYS.COORDINATES) ?? []);
     let htmlCompleto = '';
 
     direccionesGuardadas.forEach((direccion) => {
@@ -220,7 +220,7 @@ table.addEventListener('click', async (event) => {
         const lat = link.dataset.lat;
         const lon = link.dataset.lon;
         setDeDirecciones.delete(lat, lon);
-        writeLocaleStorage(LOCAL_STORAGE_KEYS.COORDINATES,setDeDirecciones);
+        writeLocaleStorage(LOCAL_STORAGE_KEYS.COORDINATES,Array.from(setDeDirecciones.getItems().entries()));
 
         cargarDireccionesGuardadasEnTabla();
         if (marcadorActual) {
