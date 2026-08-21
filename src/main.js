@@ -7,6 +7,7 @@ import {app} from './app.js';
 import './component/weatherComponent.js';
 import './component/tableComponent.js';
 import './component/mapComponent.js';
+// TODO: import components
 
 import {readLocaleStorage, writeLocaleStorage} from "./utils/localeStorageUtils.js";
 import {showWeatherInfo} from "./utils/weatherUtils.js";
@@ -26,8 +27,9 @@ const loadSavedCoordinates = () => {
 };
 loadSavedCoordinates();
 
-const formulario = document.getElementById('formulario-busqueda');
-formulario.addEventListener('submit', async (event) => {
+// TODO: create search-bar component
+const searchBar = document.getElementById('formulario-busqueda');
+searchBar.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     await searchLocation();
@@ -37,10 +39,9 @@ formulario.addEventListener('submit', async (event) => {
     showWeatherInfo(datosClima);
 });
 
-//GUARDAR DIRECCION EN LOCALSTORAGE
-
-const botonGuardarDireccion = document.getElementById('boton-guardar-direccion');
-botonGuardarDireccion.addEventListener('click', () => {
+// TODO: create save-button component
+const saveButton = document.getElementById('boton-guardar-direccion');
+saveButton.addEventListener('click', () => {
     if (!app.state.currentCoordinate || !app.state.currentCoordinate.latitud) {
         alert('No hay dirección para guardar. Por favor, selecciona una ubicación primero.');
         return;
