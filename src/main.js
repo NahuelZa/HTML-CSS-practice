@@ -6,18 +6,16 @@ import {app} from './app.js';
 // components
 import './component/weatherComponent.js';
 import './component/tableComponent.js';
+import './component/mapComponent.js';
 
 import {readLocaleStorage, writeLocaleStorage} from "./utils/localeStorageUtils.js";
-import {fetchLocationByCoordinates, fetchLocationByName} from "./api/openStreetMapApi.js";
-import {beautifulCoordinateString} from "./utils/coordinateUtils.js";
 import {showWeatherInfo} from "./utils/weatherUtils.js";
 
 import {LOCAL_STORAGE_KEYS} from "./appConsts.js";
 import {TABLE_COMPONENT_ID} from "./component/tableComponent.js";
 import {WEATHER_COMPONENT_ID} from "./component/weatherComponent.js";
-
-app.state.map = L.map('map', { scrollWheelZoom:true }).setView([40.4168, -3.7038], 5);
-const map = app.state.map;
+import {fetchLocationByName} from "./api/openStreetMapApi.js";
+import {MAP_COMPONENT_ID} from "./component/mapComponent.js";
 
 const direccionesGuardadas = new Map(readLocaleStorage(LOCAL_STORAGE_KEYS.COORDINATES));
 
@@ -30,44 +28,6 @@ const cargarDireccionesGuardadas = () => {
     app.components.get(TABLE_COMPONENT_ID).loadCoordinates();
 };
 cargarDireccionesGuardadas();
-
-//Cargar el mapa
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
-
-let popup = L.popup();
-
-async function onMapClick(e) {
-    const lat = e.latlng.lat;
-    const lon = e.latlng.lng;
-
-
-    const datosClima = await app.components.get(WEATHER_COMPONENT_ID).getWeather(lat, lon);
-
-    await setearMarcador(lat, lon);
-    showWeatherInfo(datosClima);
-
-    try {
-        const location = await fetchLocationByCoordinates(lat, lon);
-
-        popup
-            .setLatLng(e.latlng)
-            .setContent("You clicked the map at " + beautifulCoordinateString(lat, lon) + "<br>" + location.display_name + "<br>🌡️ Temp: " + datosClima.temperatura + " " + datosClima.unidadTemp + "<br>💨 Viento: " + datosClima.viento + " " + datosClima.unidadViento)
-            .openOn(map);
-
-        app.state.currentCoordinate = {
-            latitud: lat,
-            longitud: lon,
-            nombreLugar: location.display_name.split(',').slice(0,2).join(', ')
-        };
-    } catch (error) {
-        console.error('Error consulting Nominatim:', error);
-    }
-}
-
-map.on('click', onMapClick);
 
 async function buscarDireccion() {
     const textoBusqueda = document.getElementById('buscador-ciudad').value;
@@ -95,37 +55,14 @@ async function buscarDireccion() {
     }
 }
 
-async function setearMarcador(lat, lon, nombreLugar, datosClima) {
-    if (app.state.currentMarker) {
-        map.removeLayer(app.state.currentMarker);
-    }
-    //Si solo le paso lat y lon, no le pongo popup. Si le paso nombreLugar y datosClima, le pongo el popup con info del clima
-    if (!nombreLugar) {
-        app.state.currentMarker = L.marker([lat, lon]).addTo(map);
-        return;
-    }
-
-    const contenidoPopup = `
-    <b>${nombreLugar}</b><br>
-    🌡️ Temp: ${datosClima.temperatura} ${datosClima.unidadTemp}<br>
-    💨 Viento: ${datosClima.viento} ${datosClima.unidadViento}
-`;
-
-    app.state.currentMarker = L.marker([lat, lon])
-        .addTo(map)
-        .bindPopup(contenidoPopup)
-        .openPopup();
-}
-app.state.setMarker = setearMarcador;
-
 const formulario = document.getElementById('formulario-busqueda');
 formulario.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     await buscarDireccion();
-    map.setView([app.state.currentCoordinate.latitud, app.state.currentCoordinate.longitud], 14);
+    app.components.get(MAP_COMPONENT_ID).map.setView([app.state.currentCoordinate.latitud, app.state.currentCoordinate.longitud], 14);
     const datosClima = await app.components.get(WEATHER_COMPONENT_ID).getWeather(app.state.currentCoordinate.latitud, app.state.currentCoordinate.longitud);
-    await setearMarcador(app.state.currentCoordinate.latitud, app.state.currentCoordinate.longitud, app.state.currentCoordinate.nombreLugar, datosClima);
+    await app.components.get(MAP_COMPONENT_ID).setMarker(app.state.currentCoordinate.latitud, app.state.currentCoordinate.longitud, app.state.currentCoordinate.nombreLugar, datosClima);
     showWeatherInfo(datosClima);
 });
 

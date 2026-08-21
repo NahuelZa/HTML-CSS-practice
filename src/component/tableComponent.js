@@ -4,6 +4,7 @@ import {beautifulCoordinateString} from "../utils/coordinateUtils.js";
 import {WEATHER_COMPONENT_ID} from "./weatherComponent.js";
 import {showWeatherInfo} from "../utils/weatherUtils.js";
 import {app} from "../app.js";
+import {MAP_COMPONENT_ID} from "./mapComponent.js";
 
 export const TABLE_COMPONENT_ID = 'table-component';
 
@@ -51,9 +52,9 @@ export const TABLE_COMPONENT_ID = 'table-component';
         const lon = link.dataset.lon;
         const nombreLugar = link.textContent.trim();
         const clima = await app.components.get(WEATHER_COMPONENT_ID).getWeather(lat, lon);
-        app.state.setMarker(lat, lon, nombreLugar, clima);
+        app.components.get(MAP_COMPONENT_ID).setMarker(lat, lon, nombreLugar, clima);
         showWeatherInfo(clima);
-        app.state.map.flyTo([lat, lon], 13, {duration: 0.8});
+        app.components.get(MAP_COMPONENT_ID).map.flyTo([lat, lon], 13, {duration: 0.8});
       }
     });
 
@@ -68,9 +69,10 @@ export const TABLE_COMPONENT_ID = 'table-component';
         writeLocaleStorage(LOCAL_STORAGE_KEYS.COORDINATES, Array.from(app.state.state.coordinates.getItems().entries()));
 
         loadCoordinates();
-        if (app.state.currentMarker) {
-          app.state.map.removeLayer(app.state.currentMarker);
-          app.state.currentMarker = null;
+        const currentMarker = app.components.get(MAP_COMPONENT_ID).currentMarker;
+        if (currentMarker) {
+          app.components.get(MAP_COMPONENT_ID).map.removeLayer(currentMarker);
+          app.components.get(MAP_COMPONENT_ID).currentMarker = null;
         }
       }
     });
