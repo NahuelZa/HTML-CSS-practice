@@ -1,13 +1,15 @@
 import './style.pcss';
 import 'bootstrap/dist/js/bootstrap.js';
-import { addAdressToLocalStorage, getDireccion, removeDireccion, removeDireccionSingle } from "./utils/saveAdress.js";
 import { SetDeDirecciones } from './utils/setDirecciones.js';
+import {readLocaleStorage, writeLocaleStorage} from "./utils/localeStorageUtils.js";
+import {LOCAL_STORAGE_KEYS} from "./appConsts.js";
 
 const map = L.map('map', { scrollWheelZoom:true }).setView([40.4168, -3.7038], 5);
 let marcadorActual = null;
 let datosDireccion = {};
 let setDeDirecciones = new SetDeDirecciones();
-const direccionesGuardadas = getDireccion();
+const direccionesGuardadas = readLocaleStorage(LOCAL_STORAGE_KEYS.COORDINATES);
+
 const botonGuardarDireccion = document.getElementById('boton-guardar-direccion');
 const table = document.getElementById('data-table');
 const formulario = document.getElementById('formulario-busqueda');
@@ -83,7 +85,7 @@ async function buscarDireccion() {
                 latitud: lat,
                 longitud: lon,
                 nombreLugar: lugar.display_name.split(',').slice(0,2).join(', ')
-                
+
             };
             return datosDireccion;
         } else {
@@ -161,7 +163,7 @@ botonGuardarDireccion.addEventListener('click', () => {
     }
 
     if (setDeDirecciones.add(datosDireccion)) {
-        addAdressToLocalStorage(setDeDirecciones);
+        writeLocaleStorage(LOCAL_STORAGE_KEYS.COORDINATES, setDeDirecciones);
         alert('Dirección guardada en el almacenamiento local.');
         cargarDireccionesGuardadasEnTabla(datosDireccion);
     } else {
@@ -175,7 +177,7 @@ const cargarDireccionesGuardadasEnTabla = (datosDireccion = null) => {
         return;
     }
 
-    const direccionesGuardadas = getDireccion();
+    const direccionesGuardadas = readLocaleStorage(LOCAL_STORAGE_KEYS.COORDINATES);
     let htmlCompleto = '';
 
     direccionesGuardadas.forEach((direccion) => {
@@ -224,7 +226,7 @@ table.addEventListener('click', async (event) => {
         const lat = link.dataset.lat;
         const lon = link.dataset.lon;
         setDeDirecciones.delete(lat, lon);
-        addAdressToLocalStorage(setDeDirecciones);
+        writeLocaleStorage(LOCAL_STORAGE_KEYS.COORDINATES,setDeDirecciones);
 
         cargarDireccionesGuardadasEnTabla();
         if (marcadorActual) {
