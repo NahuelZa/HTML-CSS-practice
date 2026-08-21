@@ -16,50 +16,22 @@ import {TABLE_COMPONENT_ID} from "./component/tableComponent.js";
 import {WEATHER_COMPONENT_ID} from "./component/weatherComponent.js";
 import {fetchLocationByName} from "./api/openStreetMapApi.js";
 import {MAP_COMPONENT_ID} from "./component/mapComponent.js";
+import {searchLocation} from "./utils/locationUtils.js";
 
-const direccionesGuardadas = new Map(readLocaleStorage(LOCAL_STORAGE_KEYS.COORDINATES));
 
-//Cargo direcciones del localStorage al SetDeDirecciones para poder trabajar con ellas
-const cargarDireccionesGuardadas = () => {
-    if (direccionesGuardadas === null || direccionesGuardadas === undefined) return;
-    direccionesGuardadas.forEach((direccion) => {
+const loadSavedCoordinates = () => {
+    new Map(readLocaleStorage(LOCAL_STORAGE_KEYS.COORDINATES)).forEach((direccion) => {
         app.state.coordinates.add(direccion);
     });
     app.components.get(TABLE_COMPONENT_ID).loadCoordinates();
 };
-cargarDireccionesGuardadas();
-
-async function buscarDireccion() {
-    const textoBusqueda = document.getElementById('buscador-ciudad').value;
-    if (!textoBusqueda) return;
-
-    try {
-        const datos = await fetchLocationByName(textoBusqueda);
-
-        if (datos.length > 0) {
-            const lugar = datos[0];
-            const lat = parseFloat(lugar.lat);
-            const lon = parseFloat(lugar.lon);
-
-          app.state.currentCoordinate = {
-                latitud: lat,
-                longitud: lon,
-                nombreLugar: lugar.display_name.split(',').slice(0,2).join(', ')
-
-            };
-        } else {
-            alert('No se encontraron resultados para esa búsqueda.');
-        }
-    } catch (error) {
-        console.error('Error consultando Nominatim:', error);
-    }
-}
+loadSavedCoordinates();
 
 const formulario = document.getElementById('formulario-busqueda');
 formulario.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    await buscarDireccion();
+    await searchLocation();
     app.components.get(MAP_COMPONENT_ID).map.setView([app.state.currentCoordinate.latitud, app.state.currentCoordinate.longitud], 14);
     const datosClima = await app.components.get(WEATHER_COMPONENT_ID).getWeather(app.state.currentCoordinate.latitud, app.state.currentCoordinate.longitud);
     await app.components.get(MAP_COMPONENT_ID).setMarker(app.state.currentCoordinate.latitud, app.state.currentCoordinate.longitud, app.state.currentCoordinate.nombreLugar, datosClima);
