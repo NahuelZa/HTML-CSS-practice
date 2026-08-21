@@ -5,18 +5,18 @@ export class SetDeDirecciones {
 
     // Agrega la dirección usando latitud y longitud como clave única
     add(direccion) {
-        
+
         // Creamos una clave única uniendo latitud y longitud
         const hashKey = `${direccion.latitud}_${direccion.longitud}`;
-        
+
         if (this.items.has(hashKey)) {
-            return false; 
+            return false;
         }
-        
+
         // Si no existe, lo guarda y avisa devolviendo true
         this.items.set(hashKey, direccion);
         return true;
-    
+
     }
 
     // Verifica si la ubicación ya existe en el conjunto
@@ -32,6 +32,10 @@ export class SetDeDirecciones {
     // Devuelve una lista con todos los diccionarios limpios
     get values() {
         return Array.from(this.items.values());
+    }
+
+    getItems() {
+        return this.items;
     }
 
     // Te da el total de lugares guardados
