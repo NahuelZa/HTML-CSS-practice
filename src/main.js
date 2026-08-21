@@ -53,8 +53,8 @@ async function onMapClick(e) {
             .openOn(map);
 
         datosDireccion = {
-            latitud: fmtCoord(lat, 'N', 'S'),
-            longitud: fmtCoord(lon, 'E', 'O'),
+            latitud: lat,
+            longitud: lon,
             nombreLugar: lugar.display_name.split(',').slice(0,2).join(', ')
         };
     } catch (error) {
@@ -80,8 +80,8 @@ async function buscarDireccion() {
             const lon = parseFloat(lugar.lon);
 
             datosDireccion = {
-                latitud: fmtCoord(lat, 'N', 'S'),
-                longitud: fmtCoord(lon, 'E', 'O'),
+                latitud: lat,
+                longitud: lon,
                 nombreLugar: lugar.display_name.split(',').slice(0,2).join(', ')
                 
             };
@@ -187,7 +187,7 @@ const cargarDireccionesGuardadasEnTabla = (datosDireccion = null) => {
 
 const crearFilaHTML = (dir) => `
     <tr>
-        <td>${dir.latitud}, ${dir.longitud}</td>
+        <td>${fmtCoord(dir.latitud, 'N', 'S')}, ${fmtCoord(dir.longitud, 'E', 'O')}</td>
         <td>
             <a href="#" class="direccion-link" data-lat="${dir.latitud}" data-lon="${dir.longitud}">
                 ${dir.nombreLugar}
@@ -209,6 +209,7 @@ table.addEventListener('click', async (event) => {
         const lat = link.dataset.lat;
         const lon = link.dataset.lon;
         const nombreLugar = link.textContent.trim();
+        console.log(lat,lon);
         const clima = await obtenerClima(lat, lon);
         setearMarcador(lat, lon, nombreLugar, clima);
         mostrarInfoClima(clima);
