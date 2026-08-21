@@ -19,7 +19,6 @@ export const TABLE_COMPONENT_ID = 'table-component';
       }
 
       const savedCoordinates = new Map(readLocaleStorage(LOCAL_STORAGE_KEYS.COORDINATES) ?? []);
-      debugger
 
       let html = '';
       savedCoordinates.forEach((c) => {
@@ -65,8 +64,8 @@ export const TABLE_COMPONENT_ID = 'table-component';
         event.preventDefault();
         const lat = link.dataset.lat;
         const lon = link.dataset.lon;
-        app.state.state.coordinates.delete(lat, lon);
-        writeLocaleStorage(LOCAL_STORAGE_KEYS.COORDINATES, Array.from(app.state.state.coordinates.getItems().entries()));
+        app.state.coordinates.delete(lat, lon);
+        writeLocaleStorage(LOCAL_STORAGE_KEYS.COORDINATES, Array.from(app.state.coordinates.getItems().entries()));
 
         loadCoordinates();
         const currentMarker = app.components.get(MAP_COMPONENT_ID).currentMarker;
