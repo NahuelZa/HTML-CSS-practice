@@ -1,13 +1,17 @@
 import './style.pcss';
 import 'bootstrap/dist/js/bootstrap.js';
-import { addAdressToLocalStorage, getDireccion, removeDireccion, removeDireccionSingle } from "./utils/saveAdress.js";
 import { SetDeDirecciones } from './utils/setDirecciones.js';
+import {readLocaleStorage, writeLocaleStorage} from "./utils/localeStorageUtils.js";
+import {LOCAL_STORAGE_KEYS} from "./appConsts.js";
+import {fetchLocationByCoordinates, fetchLocationByName} from "./api/openStreetMapApi.js";
+import {fetchWeatherByCoordinates} from "./api/openMeteoApi.js";
 
 const map = L.map('map', { scrollWheelZoom:true }).setView([40.4168, -3.7038], 5);
 let marcadorActual = null;
 let datosDireccion = {};
 let setDeDirecciones = new SetDeDirecciones();
-const direccionesGuardadas = getDireccion();
+const direccionesGuardadas = readLocaleStorage(LOCAL_STORAGE_KEYS.COORDINATES);
+
 const botonGuardarDireccion = document.getElementById('boton-guardar-direccion');
 const table = document.getElementById('data-table');
 const formulario = document.getElementById('formulario-busqueda');
@@ -28,7 +32,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 let popup = L.popup();
 
-function fmtCoord(valor, letraMayorA0Grados, letraMenorA0Grados){
+function agregarCoordenada(valor, letraMayorA0Grados, letraMenorA0Grados){
     const puntoCardinal = valor >= 0 ? letraMayorA0Grados : letraMenorA0Grados;
     return Math.abs(valor).toFixed(3) + '°' + puntoCardinal;
   }
@@ -38,24 +42,22 @@ async function onMapClick(e) {
     const lon = e.latlng.lng;
 
     const datosClima = await obtenerClima(lat, lon);
-    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
 
     await setearMarcador(lat, lon);
     await mostrarInfoClima(datosClima);
 
     try {
-        const response = await fetch(url);
-        const lugar = await response.json();
+        const location = await fetchLocationByCoordinates(lat, lon);
 
         popup
             .setLatLng(e.latlng)
-            .setContent("You clicked the map at " + fmtCoord(e.latlng.lat, 'N', 'S') + ", " + fmtCoord(e.latlng.lng, 'E', 'O') + "<br>" + lugar.display_name + "<br>🌡️ Temp: " + datosClima.temperatura + " " + datosClima.unidadTemp + "<br>💨 Viento: " + datosClima.viento + " " + datosClima.unidadViento)
+            .setContent("You clicked the map at " + agregarCoordenada(e.latlng.lat, 'N', 'S') + ", " + agregarCoordenada(e.latlng.lng, 'E', 'O') + "<br>" + location.display_name + "<br>🌡️ Temp: " + datosClima.temperatura + " " + datosClima.unidadTemp + "<br>💨 Viento: " + datosClima.viento + " " + datosClima.unidadViento)
             .openOn(map);
 
         datosDireccion = {
             latitud: lat,
             longitud: lon,
-            nombreLugar: lugar.display_name.split(',').slice(0,2).join(', ')
+            nombreLugar: location.display_name.split(',').slice(0,2).join(', ')
         };
     } catch (error) {
         console.error('Error consulting Nominatim:', error);
@@ -68,11 +70,8 @@ async function buscarDireccion() {
     const textoBusqueda = document.getElementById('buscador-ciudad').value;
     if (!textoBusqueda) return;
 
-    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(textoBusqueda)}`;
-
     try {
-        const respuesta = await fetch(url);
-        const datos = await respuesta.json();
+        const datos = await fetchLocationByName(textoBusqueda);
 
         if (datos.length > 0) {
             const lugar = datos[0];
@@ -83,7 +82,7 @@ async function buscarDireccion() {
                 latitud: lat,
                 longitud: lon,
                 nombreLugar: lugar.display_name.split(',').slice(0,2).join(', ')
-                
+
             };
             return datosDireccion;
         } else {
@@ -117,11 +116,8 @@ async function setearMarcador(lat, lon, nombreLugar, datosClima) {
 }
 
 async function obtenerClima(lat, lon) {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,wind_speed_10m,weather_code`;
-
     try {
-        const respuesta = await fetch(url);
-        const datos = await respuesta.json();
+        const datos = await fetchWeatherByCoordinates(lat, lon);
 
         const datosClima = {
             temperatura: datos.current.temperature_2m,
@@ -161,7 +157,7 @@ botonGuardarDireccion.addEventListener('click', () => {
     }
 
     if (setDeDirecciones.add(datosDireccion)) {
-        addAdressToLocalStorage(setDeDirecciones);
+        writeLocaleStorage(LOCAL_STORAGE_KEYS.COORDINATES, setDeDirecciones);
         alert('Dirección guardada en el almacenamiento local.');
         cargarDireccionesGuardadasEnTabla(datosDireccion);
     } else {
@@ -175,7 +171,7 @@ const cargarDireccionesGuardadasEnTabla = (datosDireccion = null) => {
         return;
     }
 
-    const direccionesGuardadas = getDireccion();
+    const direccionesGuardadas = readLocaleStorage(LOCAL_STORAGE_KEYS.COORDINATES);
     let htmlCompleto = '';
 
     direccionesGuardadas.forEach((direccion) => {
@@ -187,7 +183,7 @@ const cargarDireccionesGuardadasEnTabla = (datosDireccion = null) => {
 
 const crearFilaHTML = (dir) => `
     <tr>
-        <td>${fmtCoord(dir.latitud, 'N', 'S')}, ${fmtCoord(dir.longitud, 'E', 'O')}</td>
+        <td>${agregarCoordenada(dir.latitud, 'N', 'S')}, ${agregarCoordenada(dir.longitud, 'E', 'O')}</td>
         <td>
             <a href="#" class="direccion-link" data-lat="${dir.latitud}" data-lon="${dir.longitud}">
                 ${dir.nombreLugar}
@@ -225,7 +221,7 @@ table.addEventListener('click', async (event) => {
         const lat = link.dataset.lat;
         const lon = link.dataset.lon;
         setDeDirecciones.delete(lat, lon);
-        addAdressToLocalStorage(setDeDirecciones);
+        writeLocaleStorage(LOCAL_STORAGE_KEYS.COORDINATES,setDeDirecciones);
 
         cargarDireccionesGuardadasEnTabla();
         if (marcadorActual) {
