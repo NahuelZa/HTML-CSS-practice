@@ -3,6 +3,8 @@ import 'bootstrap/dist/js/bootstrap.js';
 import { SetDeDirecciones } from './utils/setDirecciones.js';
 import {readLocaleStorage, writeLocaleStorage} from "./utils/localeStorageUtils.js";
 import {LOCAL_STORAGE_KEYS} from "./appConsts.js";
+import {fetchLocationByCoordinates, fetchLocationByName} from "./api/openStreetMapApi.js";
+import {fetchWeatherByCoordinates} from "./api/openMeteoApi.js";
 
 const map = L.map('map', { scrollWheelZoom:true }).setView([40.4168, -3.7038], 5);
 let marcadorActual = null;
@@ -40,24 +42,22 @@ async function onMapClick(e) {
     const lon = e.latlng.lng;
 
     const datosClima = await obtenerClima(lat, lon);
-    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
 
     await setearMarcador(lat, lon);
     await mostrarInfoClima(datosClima);
 
     try {
-        const response = await fetch(url);
-        const lugar = await response.json();
+        const location = await fetchLocationByCoordinates(lat, lon);
 
         popup
             .setLatLng(e.latlng)
-            .setContent("You clicked the map at " + agregarCoordenada(e.latlng.lat, 'N', 'S') + ", " + agregarCoordenada(e.latlng.lng, 'E', 'O') + "<br>" + lugar.display_name + "<br>🌡️ Temp: " + datosClima.temperatura + " " + datosClima.unidadTemp + "<br>💨 Viento: " + datosClima.viento + " " + datosClima.unidadViento)
+            .setContent("You clicked the map at " + agregarCoordenada(e.latlng.lat, 'N', 'S') + ", " + agregarCoordenada(e.latlng.lng, 'E', 'O') + "<br>" + location.display_name + "<br>🌡️ Temp: " + datosClima.temperatura + " " + datosClima.unidadTemp + "<br>💨 Viento: " + datosClima.viento + " " + datosClima.unidadViento)
             .openOn(map);
 
         datosDireccion = {
             latitud: lat,
             longitud: lon,
-            nombreLugar: lugar.display_name.split(',').slice(0,2).join(', ')
+            nombreLugar: location.display_name.split(',').slice(0,2).join(', ')
         };
     } catch (error) {
         console.error('Error consulting Nominatim:', error);
@@ -70,11 +70,8 @@ async function buscarDireccion() {
     const textoBusqueda = document.getElementById('buscador-ciudad').value;
     if (!textoBusqueda) return;
 
-    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(textoBusqueda)}`;
-
     try {
-        const respuesta = await fetch(url);
-        const datos = await respuesta.json();
+        const datos = await fetchLocationByName(textoBusqueda);
 
         if (datos.length > 0) {
             const lugar = datos[0];
@@ -119,11 +116,8 @@ async function setearMarcador(lat, lon, nombreLugar, datosClima) {
 }
 
 async function obtenerClima(lat, lon) {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,wind_speed_10m,weather_code`;
-
     try {
-        const respuesta = await fetch(url);
-        const datos = await respuesta.json();
+        const datos = await fetchWeatherByCoordinates(lat, lon);
 
         const datosClima = {
             temperatura: datos.current.temperature_2m,
