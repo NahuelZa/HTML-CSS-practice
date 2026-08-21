@@ -1,6 +1,7 @@
 import {fetchLocationByName} from "../api/openStreetMapApi.js";
 import {app} from "../app.js";
 
+// TODO: move to search-bar component
 export const searchLocation = async () => {
   const name = document.getElementById('buscador-ciudad').value;
   if (!name) return;
