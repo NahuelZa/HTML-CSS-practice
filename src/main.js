@@ -14,7 +14,6 @@ import {showWeatherInfo} from "./utils/weatherUtils.js";
 import {LOCAL_STORAGE_KEYS} from "./appConsts.js";
 import {TABLE_COMPONENT_ID} from "./component/tableComponent.js";
 import {WEATHER_COMPONENT_ID} from "./component/weatherComponent.js";
-import {fetchLocationByName} from "./api/openStreetMapApi.js";
 import {MAP_COMPONENT_ID} from "./component/mapComponent.js";
 import {searchLocation} from "./utils/locationUtils.js";
 
