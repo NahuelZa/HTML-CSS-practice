@@ -11,13 +11,14 @@ export const TABLE_COMPONENT_ID = 'table-component';
 ((app) => {
   const table = document.getElementById('data-table');
 
-  const loadCoordinates = () => {
+  const appendCurrentCoordinate = () => {
     if (app.state.currentCoordinate != null) {
       table.innerHTML += renderRow(app.state.currentCoordinate);
       console.log(app.state.currentCoordinate);
-      return;
     }
+  }
 
+  const loadCoordinates = () => {
     const savedCoordinates = new Map(readLocaleStorage(LOCAL_STORAGE_KEYS.COORDINATES) ?? []);
 
     let html = '';
@@ -82,7 +83,7 @@ export const TABLE_COMPONENT_ID = 'table-component';
   loadCoordinates();
 
   const tableComponent = {
-    loadCoordinates,
+    appendCurrentCoordinate,
   };
   app.components.set(TABLE_COMPONENT_ID, tableComponent);
 })(app);

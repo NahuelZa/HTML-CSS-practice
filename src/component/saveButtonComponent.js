@@ -17,7 +17,7 @@ import { TABLE_COMPONENT_ID } from './tableComponent.js';
         Array.from(app.state.coordinates.getItems().entries())
       );
       alert('Dirección guardada en el almacenamiento local.');
-      app.components.get(TABLE_COMPONENT_ID).loadCoordinates();
+      app.components.get(TABLE_COMPONENT_ID).appendCurrentCoordinate();
     } else {
       alert('Este lugar ya está en tu lista de guardados.');
     }
