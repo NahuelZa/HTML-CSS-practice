@@ -3,8 +3,6 @@ import { LOCAL_STORAGE_KEYS } from '../appConsts.js';
 import { app } from '../app.js';
 import { TABLE_COMPONENT_ID } from './tableComponent.js';
 
-export const BUTTON_SAVE_COMPONENT_ID = 'save-button-component';
-
 (() => {
   const saveButton = document.getElementById('boton-guardar-direccion');
   saveButton.addEventListener('click', () => {
@@ -24,6 +22,4 @@ export const BUTTON_SAVE_COMPONENT_ID = 'save-button-component';
       alert('Este lugar ya está en tu lista de guardados.');
     }
   });
-
-  app.components.set(BUTTON_SAVE_COMPONENT_ID, saveButton);
 })(app);

@@ -4,8 +4,6 @@ import { showWeatherInfo } from '../utils/weatherUtils.js';
 import { MAP_COMPONENT_ID } from './mapComponent.js';
 import { fetchLocationByName } from '../api/openStreetMapApi.js';
 
-export const SEARCH_BAR_COMPONENT_ID = 'search-bar-component';
-
 (() => {
   const searchLocation = async () => {
     const name = document.getElementById('buscador-ciudad').value;
@@ -53,10 +51,4 @@ export const SEARCH_BAR_COMPONENT_ID = 'search-bar-component';
       );
     showWeatherInfo(datosClima);
   });
-
-  const searchbarComponent = {
-    searchLocation,
-  };
-
-  app.components.set(SEARCH_BAR_COMPONENT_ID, searchbarComponent);
 })(app);
