@@ -17,8 +17,7 @@ const initStorageData = () => {
   const savedCoordinates = new Map(rawData);
 
   savedCoordinates.forEach((direccion) => {
-    // En caso de que se guardara la entrada completa [key, value]
-    const coord = Array.isArray(direccion) ? direccion[1] : direccion;
+    app.state.coordinates.add(direccion);
   });
 };
 
