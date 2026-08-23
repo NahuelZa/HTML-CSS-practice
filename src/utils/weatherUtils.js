@@ -3,4 +3,4 @@ export const showWeatherInfo = (weatherData) => {
   div.innerHTML = `
     🌡️ Temp: ${weatherData.temperatura} ${weatherData.unidadTemp}<br>
     💨 Viento: ${weatherData.viento} ${weatherData.unidadViento}`;
-}
+};

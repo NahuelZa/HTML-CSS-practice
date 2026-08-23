@@ -1,7 +1,7 @@
 import express from 'express';
 import { engine } from 'express-handlebars';
 import { createServer as createViteServer } from 'vite';
-import data from './data/data.json' with {type: 'json'}
+import data from './data/data.json' with { type: 'json' };
 
 const port = process.env.PORT || 5173;
 

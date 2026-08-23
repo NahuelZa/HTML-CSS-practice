@@ -1,5 +1,5 @@
-import {fetchLocationByName} from "../api/openStreetMapApi.js";
-import {app} from "../app.js";
+import { fetchLocationByName } from '../api/openStreetMapApi.js';
+import { app } from '../app.js';
 
 // TODO: move to search-bar component
 export const searchLocation = async () => {
@@ -17,8 +17,7 @@ export const searchLocation = async () => {
       app.state.currentCoordinate = {
         latitud: lat,
         longitud: lon,
-        nombreLugar: lugar.display_name.split(',').slice(0,2).join(', ')
-
+        nombreLugar: lugar.display_name.split(',').slice(0, 2).join(', '),
       };
     } else {
       alert('No se encontraron resultados para esa búsqueda.');
@@ -26,4 +25,4 @@ export const searchLocation = async () => {
   } catch (error) {
     console.error('Error consultando Nominatim:', error);
   }
-}
+};

@@ -1,7 +1,7 @@
 ## main.js
 
 - stale import `removeDireccion`, `removeDireccionSingle`
-- 
+-
 
 ## setDirecciones.js
 
@@ -9,7 +9,7 @@
 
 ## saveAdress.js
 
-- 
+-
 
 ## other
 

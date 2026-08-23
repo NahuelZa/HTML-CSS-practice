@@ -7,4 +7,4 @@ export const beautifulCoordinateString = (lat, lon) => {
   }
 
   return `${beautifulCoordinate(lat, latChar)}, ${beautifulCoordinate(lon, lonChar)}`;
-}
+};
